@@ -7,3 +7,25 @@
 .sidebar {
   min-height: 600px;
 }
+.post-card {
+  margin: 30px 50px;
+  min-width: 30rem;
+}
+.tagClass {
+  margin-left: 10px;
+}
+.deleteIcon {
+  cursor: pointer;
+  color: black;
+  margin-top: 10px;
+  margin-right: 10px;
+  font-size: 20px;
+}
+.reactions {
+  margin-top: 10px;
+}
+.create-post {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 10px;
+}
