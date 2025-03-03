@@ -1,4 +1,3 @@
-import styles from "../CSS/Sidebar.module.css";
 function Sidebar({ selectedTab, setSelectedTab }) {
   const handleOnClick = (selectedName) => {
     setSelectedTab(selectedName);
@@ -6,7 +5,7 @@ function Sidebar({ selectedTab, setSelectedTab }) {
   return (
     <div
       className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sidebar"
-      style={{ width: "200px" }}
+      style={{ width: "200px", height: "auto" }}
     >
       <a
         href="/"
@@ -67,35 +66,6 @@ function Sidebar({ selectedTab, setSelectedTab }) {
           />
           <strong>mdo</strong>
         </a>
-        <ul
-          className={`dropdown-menu dropdown-menu-dark text-small shadow show ${styles.menuList}`}
-          data-popper-placement="top-start"
-          data-popper-reference-hidden=""
-        >
-          <li>
-            <a className="dropdown-item" href="#">
-              New project...
-            </a>
-          </li>
-          <li>
-            <a className="dropdown-item" href="#">
-              Settings
-            </a>
-          </li>
-          <li>
-            <a className="dropdown-item" href="#">
-              Profile
-            </a>
-          </li>
-          <li>
-            <hr className="dropdown-divider" />
-          </li>
-          <li>
-            <a className="dropdown-item" href="#">
-              Sign out
-            </a>
-          </li>
-        </ul>
       </div>
     </div>
   );

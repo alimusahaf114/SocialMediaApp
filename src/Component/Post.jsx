@@ -11,25 +11,34 @@ const Post = ({ post }) => {
         <h5 className="card-title">
           {post.title}
           <span
-            key={post.id}
-            className="position-absolute top-0 start-100 translate-middle badge rounded-pill "
+            className="position-absolute top-0 start-100 translate-middle badge rounded-pill"
             onClick={() => deletePost(post.id)}
+            style={{ cursor: "pointer" }} // ✅ Makes delete icon clickable
           >
             <FaDeleteLeft className="deleteIcon" />
           </span>
         </h5>
+
         <p className="card-text">{post.body}</p>
-        {post.tags &&
-          post.tags.map((tag) => (
-            <span key={tag} className="badge text-bg-primary hashtag">
+
+        {/* ✅ Ensure `post.tags` exists before mapping */}
+        {post.tags?.length > 0 &&
+          post.tags.map((tag, index) => (
+            <span key={index} className="badge text-bg-primary hashtag">
               {tag}
             </span>
           ))}
-        <div className="alert alert-success reactions" role="alert">
-          {post.reactions}
-        </div>
+
+        {/* ✅ Fix reactions display (Ensures object values are correctly displayed) */}
+        {post.reactions && (
+          <div className="alert alert-success reactions" role="alert">
+            👍 Likes: {post.reactions.likes ?? 0} | 👎 Dislikes:{" "}
+            {post.reactions.dislikes ?? 0}
+          </div>
+        )}
       </div>
     </div>
   );
 };
+
 export default Post;
