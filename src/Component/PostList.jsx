@@ -5,25 +5,7 @@ import WelcomeMessage from "./WelcomeMessage";
 import LoadingSpinner from "./LoadingSpinner";
 
 export default function PostList() {
-  const { postList, addInitialPosts } = useContext(PostListData);
-  const [fetching, setFetching] = useState(false);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-    setFetching(true);
-    fetch("https://dummyjson.com/posts", { signal })
-      .then((res) => res.json())
-      .then((data) => {
-        addInitialPosts(data.posts);
-        setFetching(false);
-      });
-
-    return () => {
-      console.log("Bhai network call ruk gai");
-      controller.abort();
-    };
-  }, []);
+  const { postList, fetching } = useContext(PostListData);
 
   return (
     <>

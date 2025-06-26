@@ -1,8 +1,8 @@
-import { useReducer, createContext } from "react";
+import { useReducer, createContext, useState, useEffect } from "react";
 
 export const PostList = createContext({
   postList: [],
-  addInitialPosts: () => {},
+  fetching: false,
   addPost: () => {},
   deletePost: () => {},
 });
@@ -15,7 +15,7 @@ const postListReducer = (currPostList, action) => {
       (post) => post.id !== action.payload.postId
     );
   } else if (action.type === "ADD-INITIAL-POSTS") {
-    newPostList = action.payload.posts; // ✅ Fixed: Spread array to ensure proper state update
+    newPostList = action.payload.posts;
   } else if (action.type === "ADD-POST") {
     newPostList = [action.payload, ...currPostList];
   }
@@ -25,6 +25,23 @@ const postListReducer = (currPostList, action) => {
 
 export const PostListProvider = ({ children }) => {
   const [postList, dispatchPostList] = useReducer(postListReducer, []);
+  const [fetching, setFetching] = useState(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setFetching(true);
+    fetch("https://dummyjson.com/posts", { signal })
+      .then((res) => res.json())
+      .then((data) => {
+        addInitialPosts(data.posts);
+        setFetching(false);
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   const addInitialPosts = (posts) => {
     dispatchPostList({
@@ -33,17 +50,10 @@ export const PostListProvider = ({ children }) => {
     });
   };
 
-  const addPost = (userId, postBody, postTitle, reactions, tags) => {
+  const addPost = (post) => {
     dispatchPostList({
       type: "ADD-POST",
-      payload: {
-        id: Date.now(),
-        title: postTitle,
-        body: postBody,
-        reactions: reactions,
-        userId: userId,
-        tags: tags,
-      },
+      payload: post,
     });
   };
 
@@ -55,9 +65,7 @@ export const PostListProvider = ({ children }) => {
   };
 
   return (
-    <PostList.Provider
-      value={{ addPost, addInitialPosts, deletePost, postList }}
-    >
+    <PostList.Provider value={{ addPost, deletePost, postList }}>
       {children}
     </PostList.Provider>
   );
